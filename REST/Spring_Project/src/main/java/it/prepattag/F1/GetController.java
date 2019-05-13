@@ -99,4 +99,7 @@ public class GetController {
 	}
 	//per ogni pilota quanti Gran premi ha vinto e quanti podi ha fatto
 	//e quante gare ha disputato (olte info base del pilota) e scuderia
+	
+    //per ogni tracciato il luogo in cui si trova, il nome del circuito, 
+	//giorni mancanti a gran premio + descrizione del circuito (informazion varie)
 }
