@@ -5,9 +5,10 @@ import javafx.util.Pair;
 
 public interface DriverDAO {
 	
-	public int getGareFatte(int idPilota);
-	public int getPunti(int idPilota, int anno);
-	public Constructor getCostruttoreAnno();
+	public int getGareFatteCarriera(Driver pilota);
+	public int getPunti(Driver pilota, int anno);
+	public Constructor getCostruttoreAnno(Driver pilota, int anno);
+	public int getGareFatteCampionato(Driver pilota, int anno);
 	
 	
 }
