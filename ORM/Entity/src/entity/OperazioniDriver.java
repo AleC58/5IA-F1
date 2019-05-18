@@ -40,9 +40,10 @@ public class OperazioniDriver implements DriverDAO {
 
 	@Override
 	public Constructor getCostruttoreAnno(Driver pilota, int anno) {
-		
+		Constructor c = new Constructor();
+		return c;
 	}
 
 }
 
-}
+
