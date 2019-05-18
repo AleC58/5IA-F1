@@ -9,6 +9,6 @@ package entity;
  *
  * @author davide.dariol
  */
-public class RaceDAO {
+public interface RaceDAO {
 	
 }
