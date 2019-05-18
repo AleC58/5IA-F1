@@ -103,7 +103,21 @@ public class GetController {
 	}
 	//per ogni pilota quanti Gran premi ha vinto e quanti podi ha fatto
 	//e quante gare ha disputato (olte info base del pilota) e scuderia
+	//@requestMapping("pilotipremipodi")
 	
     //per ogni tracciato il luogo in cui si trova, il nome del circuito, 
 	//giorni mancanti a gran premio + descrizione del circuito (informazion varie)
+	@RequestMapping("tracciato")
+	public HashMap[] tracciato(){
+		HashMap<String,Object>[] m = new HashMap[21];
+		for (int i = 0; i < m.length; i++) {
+			m[i] = new HashMap<>();
+			m[i].put("luogo", "Australia");
+			m[i].put("circuito", "Melbourne Gran Prix Circuit");
+			m[i].put("data", "21");
+			m[i].put("descr", "Il percorso si snoda nel cuore della città di Melbourne ed è ricavato raccordando le strade perimetrali del lago artificiale ricavato nell'Albert Park. Negli altri giorni è adibito alla normale circolazione stradale, eppure l'asfalto dell'Albert Park è tra i meno sconnessi dell'intero Circus.");
+		}
+		return m;
+	}
+	
 }
