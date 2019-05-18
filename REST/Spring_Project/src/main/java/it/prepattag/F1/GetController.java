@@ -34,6 +34,7 @@ public class GetController {
             m.put("forename", "Andrea");
             m.put("surname", "Crocco");
             m.put("nationality", "IT");
+			m.put("Scuderia", "Ferrari");
         } else {
             m.put("error", "Id inesistente");
         }
@@ -55,6 +56,7 @@ public class GetController {
             arr[i].put("forename", "Andrea");
             arr[i].put("surname", "Crocco");
             arr[i].put("nationality", "IT");
+			arr[i].put("scuderia", "Ferrari");
         }
         return arr;
     }
@@ -76,6 +78,8 @@ public class GetController {
             m[i].put("scuderia", "Ferrari");
             m[i].put("punteggio", "121");
             m[i].put("urlprofilo", "http:\\localhost\\url");
+			m[i].put("urlscuderia", "http:\\localhost\\urlscud");
+			m[i].put("nazionalita", "Romania");
         }
         return m;
     }
