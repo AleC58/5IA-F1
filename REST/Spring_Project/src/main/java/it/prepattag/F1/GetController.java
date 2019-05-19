@@ -142,7 +142,7 @@ public class GetController {
     @RequestMapping(value = "costruttore", params = "id")
     public Map costruttore(@RequestParam("id") int id) {
         HashMap<String, Object> m = new HashMap(10);
-        if (id == 10) {
+        if (id == 1) {
             long dob = Date.valueOf("2000-07-15").getTime();
             long diff = Date.valueOf(LocalDate.now()).getTime() - dob;
             int age = (int) Math.floor(diff / 3.15576e+10);
