@@ -72,7 +72,7 @@ public class GetController {
 
     /**
      * Mapping per la richiesta della classifica dei piloti (posizione nome
-     * cognome scuderia urlprofilo punteggio)
+     * cognome punteggio, id, id scuderia)
      *
      * @return Un array con n piloti in ordine di punteggio
      */
@@ -81,13 +81,13 @@ public class GetController {
         HashMap<String, Object>[] m = new HashMap[10];
         for (int i = 0; i < m.length; i++) {
             m[i] = new HashMap<>();
+            m[i].put("id", 10);
+            m[i].put("idscuderia", 1);
             m[i].put("nome", "Andrea");
             m[i].put("cognome", "Crocco");
             m[i].put("posizione", "3");
             m[i].put("scuderia", "Ferrari");
             m[i].put("punteggio", "121");
-            m[i].put("urlprofilo", "http:\\localhost\\url");
-            m[i].put("urlscuderia", "http:\\localhost\\urlscud");
             m[i].put("nazionalita", "Romania");
         }
         return m;
@@ -115,7 +115,7 @@ public class GetController {
      * Mapping per la richiesta di tutti i costruttori
      *
      * @return Un array con id costruttore, nome, compionati vinti dal
-     * costruttore, sede, manager, numero di poleposition
+     * costruttore, sede, manager, numero di poleposition, [nome cognome pilota 1, nome cognome pilota 2]
      */
     @RequestMapping("costruttori")
     public HashMap[] costruttori() {
@@ -128,6 +128,7 @@ public class GetController {
             m[i].put("sede", "Campagna Lupia");
             m[i].put("manager", "Tony Buerin");
             m[i].put("poleposition", "15");
+            m[i].put("piloti", new String[]{"Andrea Crocco", "Cuin Luca"});
 
         }
         return m;
