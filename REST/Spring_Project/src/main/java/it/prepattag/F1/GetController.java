@@ -94,8 +94,7 @@ public class GetController {
     }
 
     /**
-     * Mapping per la richiesta della classifica generale (non annuale) delle
-     * scuderie dato il numero di posizioni da visualizzare
+     * Mapping per la richiesta della classifica generale (non annuale) delle scuderie
      *
      * @return Un array con le n scuderie in ordine di punteggio
      */
@@ -105,8 +104,8 @@ public class GetController {
         for (int i = 0; i < m.length; i++) {
             m[i] = new HashMap<>();
             m[i].put("nome", "Ferrari");
-            m[i].put("posizione", "1");
-            m[i].put("punteggio", "155");
+            m[i].put("punteggio", 155);
+            m[i].put("id", 1);
         }
         return m;
     }
