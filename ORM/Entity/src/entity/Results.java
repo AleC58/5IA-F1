@@ -17,16 +17,4 @@ public class Results {
 		this.tab = tab;
 	}
 
-	public int getPunti(int idPilota, int year) {
-		ArrayList<Result> selez = new ArrayList<>();
-		Races gare = new Races();
-		
-		for (int i = 0; i < selez.size(); i++) {
-			if (tab.get(i).getDriverId() == idPilota) {
-				selez.add(tab.get(i));
-			}
-		}
-		return 0;
-
-	}
 }
