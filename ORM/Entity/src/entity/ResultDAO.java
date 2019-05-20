@@ -1,9 +1,12 @@
 
 package entity;
 
-public class ResultDAO {
+import java.util.HashMap;
+
+public interface ResultDAO {
 	
-	int getPunti(int idPilota, int year){
-		return 1;
-	}
+	public HashMap<Driver, Integer> getClassificaPiloti(int anno);
+	public HashMap<Constructor, Integer> getclassificaCostruttori(int anno);
+	public HashMap<Driver, Integer> getRisultatiGara(Race gara);
+	
 }

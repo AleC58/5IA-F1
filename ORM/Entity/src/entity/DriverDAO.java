@@ -3,14 +3,12 @@ package entity;
 import java.util.ArrayList;
 import javafx.util.Pair;
 
-public class DriverDAO {
+public interface DriverDAO {
 	
-	int getPoints(int year){
-		return 1;
-	}
-	ArrayList<Pair<Integer, Integer>> getConstructorList(){
-		ArrayList<Pair<Integer, Integer>> array = null;
-		
-		return array;
-	}			
+	public int getGareFatteCarriera(Driver pilota);
+	public int getPunti(Driver pilota, int anno);
+	public Constructor getCostruttoreAnno(Driver pilota, int anno);
+	public int getGareFatteCampionato(Driver pilota, int anno);
+	
+	
 }
