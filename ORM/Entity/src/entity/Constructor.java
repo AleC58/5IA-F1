@@ -17,7 +17,7 @@ public class Constructor implements DBEntity{
 	private String nationality;
 	private String url;
 
-	Constructor() {
+	public Constructor() {
 	}
 
 	public Integer getConstructorId() {
