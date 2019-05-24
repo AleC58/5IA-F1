@@ -1,5 +1,4 @@
-
-package f1_dao;
+package orm;
 
 public class Main {
 	

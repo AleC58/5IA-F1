@@ -1,7 +1,6 @@
-package f1_dao;
+package orm;
 import java.util.ArrayList;
 import java.util.HashMap;
-import entity.*;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;

@@ -1,4 +1,4 @@
-package entity;
+package orm;
 
 import java.util.ArrayList;
 import javafx.util.Pair;

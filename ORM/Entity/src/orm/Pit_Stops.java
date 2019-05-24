@@ -1,6 +1,4 @@
-
-package entity;
-
+package orm;
 import java.util.ArrayList;
 
 public class Pit_Stops {

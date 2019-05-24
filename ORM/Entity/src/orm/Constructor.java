@@ -1,6 +1,4 @@
-package entity;
-
-import it.utility.DB.DBEntity;
+package orm;
 import java.util.ArrayList;
 
 public class Constructor implements DBEntity{

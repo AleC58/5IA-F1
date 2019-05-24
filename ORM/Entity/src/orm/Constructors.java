@@ -1,5 +1,4 @@
-
-package entity;
+package orm;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,4 @@
-package entity;
-
-import it.utility.DB.DBEntity;
+package orm;
 import java.time.LocalTime;
 import java.util.ArrayList;
 

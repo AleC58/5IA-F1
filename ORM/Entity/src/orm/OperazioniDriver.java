@@ -1,7 +1,4 @@
-package entity;
-
-import f1_dao.F1_DAO_Implements;
-import java.util.Collection;
+package orm;
 import java.util.HashMap;
 
 /**

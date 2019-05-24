@@ -1,6 +1,4 @@
-
-package entity;
-
+package orm;
 import java.util.HashMap;
 
 public interface ResultDAO {

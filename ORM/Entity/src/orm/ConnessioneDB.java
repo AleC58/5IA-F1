@@ -1,4 +1,4 @@
-package f1_dao;
+package orm;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

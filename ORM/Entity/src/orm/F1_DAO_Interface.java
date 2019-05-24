@@ -1,7 +1,6 @@
-package f1_dao;
+package orm;
 
 import java.util.ArrayList;
-import entity.*;
 import java.util.HashMap;
 
 /*************************************************************************
