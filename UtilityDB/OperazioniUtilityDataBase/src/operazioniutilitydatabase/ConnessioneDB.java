@@ -14,7 +14,7 @@ public class ConnessioneDB {
 
     private static Connection connection = null;
     private static String strConnDB
-            = "jdbc:sqlite:F1.db";
+            = "jdbc:sqlite:prova.db";
     private static String strDriver = "org.sqlite.JDBC";
 
     public static Connection getConnection() {
@@ -23,8 +23,10 @@ public class ConnessioneDB {
 
         } catch (SQLException ex) {
             Logger.getLogger(ConnessioneDB.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println("Errore connessione");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ConnessioneDB.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println("Errore connessione");
         } finally {
             return connection;
         }
