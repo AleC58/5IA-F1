@@ -3,9 +3,14 @@ package it.prepattag.F1;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import orm.dao.F1_DAO_Implements;
+import orm.entity.Driver;
+import orm.entity.Race;
+import orm.entity.Result;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +20,8 @@ import java.util.Map;
  * Classe che gestisce le richieste get (/get/<attributo>) della API
  */
 public class GetController {
+    F1_DAO_Implements impl = new F1_DAO_Implements();
+    ArrayList<Integer> idPiloti = impl.indiciTabella("Drivers");
 
     /**
      * Mapping per la richiesta delle informazioni di un pilota
@@ -54,19 +61,28 @@ public class GetController {
      */
     @RequestMapping("drivers")
     public HashMap[] drivers() {
-        
-        HashMap<String, Object>[] arr = new HashMap[10];
-        for (int i = 0; i < arr.length; i++) {
+        HashMap<String, Object>[] arr = new HashMap[idPiloti.size()];
+        int i = 0;
+        for (int id : idPiloti) {
             arr[i] = new HashMap<>();
-            arr[i].put("age", 18);
-            arr[i].put("id", 10);
-            arr[i].put("forename", "Andrea");
-            arr[i].put("surname", "Crocco");
-            arr[i].put("nationality", "IT");
-            arr[i].put("scuderia", "Ferrari");
-            arr[i].put("granpremivinti", "13");
+            Driver d = impl.infoPilota(id);
+            long dob = d.getDob().getTime();
+            long diff = Date.valueOf(LocalDate.now()).getTime() - dob;
+            int age = (int) Math.floor(diff / 3.15576e+10);
+            HashMap<Race, Integer> m = impl.garePerPilota(d);
+            Race lastrace = (Race) m.keySet().toArray()[m.keySet().size() - 1];
+            Result res = impl.infoRisultato(lastrace.getRaceId(), id);
+            arr[i].put("age", age);
+            arr[i].put("id", id);
+            arr[i].put("forename", d.getForename());
+            arr[i].put("surname", d.getSurname());
+            arr[i].put("nationality", d.getNationality());
+
+            arr[i].put("scuderia", impl.infoCostruttore(res.getConstructorId()).getName());
+            arr[i].put("granpremivinti", 00);
             arr[i].put("numerogare", "65");
             arr[i].put("numeropodi", "15");
+            i++;
         }
         return arr;
     }

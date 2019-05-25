@@ -7,8 +7,6 @@ package orm.dao;
  * @author Carlo
  *****************************************************************************************/
 
-import orm.ConnessioneDB;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,7 +32,7 @@ public class OperazioniDB {
      * @param nomeTabella
      * @param nomeAttributo il nome dell'attributo
      * @return l'intero che codifica il tipo
-     * @throws java.sql.SQLException
+     * @throws SQLException
      ******************************************************************************************/
 
     public static int getTipoAttributo(String nomeTabella, String nomeAttributo)

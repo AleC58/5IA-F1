@@ -16,7 +16,6 @@ public class Driver implements DBEntity {
     static final int DOB = 6;
     static final int NATIONALITY = 7;
     static final int URL = 8;
-    static final int CONSTRUCTOR_ID = 9;
 
     private Integer driverId;
     private String driverRef;
@@ -27,23 +26,14 @@ public class Driver implements DBEntity {
     private Date dob;
     private String nationality;
     private String url;
-    private Integer constructorId;
     private Integer punti;
 
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
-    public void setConstructorId(Integer constructorId) {
-        this.constructorId = constructorId;
-    }
-
     public String getSurname() {
         return surname;
-    }
-
-    public Integer getConstructorId() {
-        return constructorId;
     }
 
     public Driver() {
@@ -120,14 +110,13 @@ public class Driver implements DBEntity {
     @Override
     public boolean setByDB(ArrayList a) {
         this.code = (String) a.get(CODE);
-        this.dob = (Date) a.get(DOB);
+        this.dob = Date.valueOf((String) a.get(DOB));
         this.driverId = (Integer) a.get(DRIVER_ID);
         this.driverRef = (String) a.get(DRIVER_REF);
         this.forename = (String) a.get(FORENAME);
         this.nationality = (String) a.get(NATIONALITY);
         this.number = (Integer) a.get(NUMBER);
         this.url = (String) a.get(URL);
-        this.constructorId = (Integer) a.get(CONSTRUCTOR_ID);
         this.surname = (String) a.get(SURNAME);
         return true;
     }

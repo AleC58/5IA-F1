@@ -6,37 +6,34 @@ package orm.dao;
  *
  * @author Carlo
  *****************************************************************************************/
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 public class OperazioniDB {
 
     public static int query(String query) throws SQLException {
-        Statement stm = ConnessioneDB.getConnection().createStatement();
-        ResultSet rs = stm.executeQuery(query);
-        rs.close();
+		Statement stm = ConnessioneDB.getConnection().createStatement();
+		ResultSet rs = stm.executeQuery(query);
+		rs.close();
 
-        int count = 0;
-        while (rs.next()) {
-            count++;
-        }
-        return count;
-    }
-
-
+		int count = 0;
+		while (rs.next()) {
+			count++;
+		}
+		return count;
+	}    
+    
+    
     /******************************************************************************************
-     * Recupera il tipo di un campo di una Tabella
-     * @param nomeTabella
-     * @param nomeAttributo il nome dell'attributo
-     * @return l'intero che codifica il tipo
-     * @throws SQLException
-     ******************************************************************************************/
-
+    * Recupera il tipo di un campo di una Tabella
+	* @param nomeTabella
+    * @param nomeAttributo il nome dell'attributo
+    * @return l'intero che codifica il tipo
+	* @throws SQLException
+    ******************************************************************************************/
+	
     public static int getTipoAttributo(String nomeTabella, String nomeAttributo)
-            throws SQLException {
+            throws  SQLException {
         Connection conn = null;
         DatabaseMetaData mtd = null;
         ResultSet rstCol = null;
@@ -93,11 +90,11 @@ public class OperazioniDB {
      * @param nomeAttributo il nome dell'attributo
      * @return true se il tipo  è Date, Time o TIMESTAMP
      ************************************************************************************************/
-
+	
     public static boolean isDateOTime(String nomeTabella, String nomeAttributo)
             throws SQLException {
         int tipo = getTipoAttributo(nomeTabella, nomeAttributo);
-
+        
 
         return ((tipo == Types.DATE) || (tipo == Types.TIMESTAMP)
                 || (tipo == Types.TIME));
@@ -112,10 +109,10 @@ public class OperazioniDB {
      * @return ArrayList i cui elementi sono ArrayList delle tplue dei campi 
      * specificati
      ************************************************************************************************/
-
-    public static ArrayList getRow(String nomeTabella, String nomeKey,
-                                   Object valKey, String[] elencoNomiCampi)
-            throws SQLException {
+	
+    public static ArrayList getRow(String nomeTabella, String nomeKey, 
+            Object valKey, String[] elencoNomiCampi) 
+            throws  SQLException {
         Connection conn = null;
         Statement stm = null;
         ResultSet rst = null;
@@ -169,7 +166,7 @@ public class OperazioniDB {
                 }
             } else {
                 for (int i = 0; i < numberOfColumns; i++) {
-                    elencoValori.add(rst.getObject((String) elencoNomiCampi[i]));
+                    elencoValori.add(rst.getObject((String)elencoNomiCampi[i]));
                 }
             }
             elencoTuple.add(elencoValori);
@@ -181,34 +178,34 @@ public class OperazioniDB {
         return elencoTuple;
     }
 
-    public static ArrayList getResult(String query) throws SQLException {
-        if (query(query) < 0) {
-            return null;
-        }
-        ArrayList row;
-        ArrayList rows = new ArrayList();
+    public static ArrayList getResult (String query) throws SQLException {
+		if (query(query) < 0) {
+			return null;
+		}
+		ArrayList row;
+		ArrayList rows = new ArrayList();
 
-        Statement stm = ConnessioneDB.getConnection().createStatement();
-        ResultSet rs = stm.executeQuery(query);
+		Statement stm = ConnessioneDB.getConnection().createStatement();
+		ResultSet rs = stm.executeQuery(query);
 
-        ResultSetMetaData rsmd = rs.getMetaData();
-        int numberOfColumns = rsmd.getColumnCount();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int numberOfColumns = rsmd.getColumnCount();
 
-        while (rs.next()) {
-            row = new ArrayList(numberOfColumns);
+		while (rs.next()) {
+			row = new ArrayList(numberOfColumns);
 
-            for (int i = 1; i <= numberOfColumns; i++) {
-                row.add(rs.getObject(i));
-            }
+			for (int i = 1; i <= numberOfColumns; i++) {
+				row.add(rs.getObject(i));
+			}
 
-            rows.add(row);
-        }
+			rows.add(row);
+		}
 
-        stm.close();
-        return rows;
+		stm.close();
+		return rows;
     }
-
-
+    
+    
     /************************************************************************************************
      * Recupera i valori di una colonna
      * @param nomeTabella il nome della tabella o query
@@ -217,9 +214,9 @@ public class OperazioniDB {
      * @param elencoNomiCampi, ArrayList contenente i nomi dei campi da estrarre
      * @return ArrayList contenente i valori della colonna richiesta
      ************************************************************************************************/
-
+	
     public static ArrayList getCols(String nomeTabella, String nomeAttributo,
-                                    String nomeKey, Object valKey) throws SQLException {
+            String nomeKey, Object valKey) throws SQLException {
         Connection conn = null;
         Statement stm = null;
         ResultSet rst = null;
@@ -254,16 +251,16 @@ public class OperazioniDB {
      * @param nomeAttributo il nome dell'attributo
      * @return true se il campo è di un tipo numerico
      ************************************************************************************************/
-
+	
     public static String strDateOTime(int tipoCampo, Object valDateOTime)
             throws SQLException {
         String str = "";
         if (!(valDateOTime instanceof GregorianCalendar)) {
-            throw new SQLException("Il valore NON è del tipo GREGORIAN CALENDAR");
+          throw new SQLException("Il valore NON è del tipo GREGORIAN CALENDAR");
         }
         GregorianCalendar calendar = (GregorianCalendar) valDateOTime;
         if ((tipoCampo == Types.DATE) || (tipoCampo == Types.TIMESTAMP)) {
-            str = "#" + +calendar.get(Calendar.YEAR) + "/" +
+            str = "#" + +calendar.get(Calendar.YEAR) + "/" + 
                     calendar.get(Calendar.DAY_OF_MONTH) + "/"
                     + (calendar.get(Calendar.MONTH) + 1) + "#";
         }
@@ -284,9 +281,9 @@ public class OperazioniDB {
      * @param nomeCampi, elenco dei campi della tabella da valorizzare
      * @param valori, elenco dei valori dei campi della tabella
      ************************************************************************************************/
-
+	
     public static void insRec(String nomeTabella, String[] nomeCampi,
-                              Object[] valori) throws SQLException {
+            Object[] valori) throws SQLException {
         Connection conn = null;
         Statement stm = null;
         ResultSet rst = null;
@@ -304,7 +301,7 @@ public class OperazioniDB {
                 strQuery += valori[i] + ",";
             } else {
                 if (isDateOTime(nomeTabella, nomeCampi[i])) {
-                    strCampo = strDateOTime(getTipoAttributo(nomeTabella,
+                    strCampo = strDateOTime(getTipoAttributo(nomeTabella, 
                             nomeCampi[i]), valori[i]);
                 } else {
                     strCampo = "" + valori[i];

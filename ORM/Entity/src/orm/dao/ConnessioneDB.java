@@ -1,4 +1,4 @@
-package orm;
+package orm.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +18,7 @@ public class ConnessioneDB {
 
 	private static Connection connection = null;
 	private static String strConnDB
-			= "jdbc:sqlite:F:\\scuola\\5°\\informatica\\F1_DAO\\F1.db";
+			= "jdbc:sqlite:C:\\Users\\chiara.fanello\\Documents\\F1.db";
 	private static String strDriver = "org.sqlite.JDBC";
 
 	public static Connection getConnection() {
@@ -50,7 +50,7 @@ public class ConnessioneDB {
 		if (connection == null) {
 			synchronized (ConnessioneDB.class) {
 				if (connection == null) {
-					Class.forName(strDriver);
+					//Class.forName(strDriver);
 					connection = DriverManager.getConnection(strConnDB, "", "");
 				}
 			}
