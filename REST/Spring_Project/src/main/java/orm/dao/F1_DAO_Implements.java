@@ -201,7 +201,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
             ArrayList elem = (ArrayList) app.get(i);
             Race a = new Race();
             a.setName((String) ((ArrayList) app.get(i)).get(0));
-            a.setDate(Date.valueOf((ArrayList) (app.get(i)).get(1)));
+            a.setDate(Date.valueOf((String) ((ArrayList) app.get(i)).get(1)));
             int punti = (Integer) ((ArrayList) app.get(i)).get(2);
             ris.put(a, punti);
         }
@@ -221,7 +221,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      */
     @Override
     public HashMap<Race, Integer> garePerPilota(Driver pilota) {
-        String str = "SELECT Races.name, Races.date, Results.position"
+        String str = "SELECT Races.name, Races.date, Results.position, Races.raceid"
                 + " FROM Drivers INNER JOIN results ON Drivers.driverId = results.driverId"
                 + " INNER JOIN Races ON Races.raceId = results.raceId"
                 + " WHERE Drivers.driverId = " + pilota.getDriverId()
@@ -237,11 +237,16 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         }
 
         for (int i = 0; i < app.size(); i++) {
-            ArrayList elem = (ArrayList) app.get(i);
             Race a = new Race();
             a.setName((String) ((ArrayList) app.get(i)).get(0));
-            a.setDate(Date.valueOf((ArrayList) (app.get(i)).get(1)));
-            int posizione = (Integer) ((ArrayList) app.get(i)).get(2);
+            a.setDate(Date.valueOf((String) ((ArrayList) app.get(i)).get(1)));
+            a.setRaceId((Integer) ((ArrayList) app.get(i)).get(3));
+            int posizione;
+            try {
+                posizione = (Integer) ((ArrayList) app.get(i)).get(2);
+            } catch (NullPointerException e) {
+                posizione = -1;
+            }
             ris.put(a, posizione);
         }
         return ris;

@@ -69,19 +69,24 @@ public class GetController {
             long dob = d.getDob().getTime();
             long diff = Date.valueOf(LocalDate.now()).getTime() - dob;
             int age = (int) Math.floor(diff / 3.15576e+10);
-            HashMap<Race, Integer> m = impl.garePerPilota(d);
-            Race lastrace = (Race) m.keySet().toArray()[m.keySet().size() - 1];
+            HashMap<Race, Integer> gare = impl.garePerPilota(d);
+            Race lastrace = (Race) gare.keySet().toArray()[gare.keySet().size() - 1];
             Result res = impl.infoRisultato(lastrace.getRaceId(), id);
+            int garevinte = (int) gare.entrySet().stream()
+                    .filter(pos -> pos.getValue() == 1)
+                    .count();
+            int podi = (int) gare.entrySet().stream()
+                    .filter(pos -> pos.getValue() >= 1 && pos.getValue() <= 3)
+                    .count();
             arr[i].put("age", age);
             arr[i].put("id", id);
             arr[i].put("forename", d.getForename());
             arr[i].put("surname", d.getSurname());
             arr[i].put("nationality", d.getNationality());
-
             arr[i].put("scuderia", impl.infoCostruttore(res.getConstructorId()).getName());
-            arr[i].put("granpremivinti", 00);
-            arr[i].put("numerogare", "65");
-            arr[i].put("numeropodi", "15");
+            arr[i].put("granpremivinti", garevinte);
+            arr[i].put("numerogare", gare.size());
+            arr[i].put("numeropodi", podi);
             i++;
         }
         return arr;
