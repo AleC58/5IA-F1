@@ -1,6 +1,4 @@
-package orm;
-
-import java.util.ArrayList;
+package orm.entity;
 
 public class Entity {
 

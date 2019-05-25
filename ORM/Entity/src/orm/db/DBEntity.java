@@ -1,4 +1,4 @@
-package orm;
+package orm.db;
 
 import java.util.ArrayList;
 

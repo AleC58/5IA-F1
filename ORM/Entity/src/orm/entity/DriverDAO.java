@@ -1,7 +1,4 @@
-package orm;
-
-import java.util.ArrayList;
-import javafx.util.Pair;
+package orm.entity;
 
 public interface DriverDAO {
 	
