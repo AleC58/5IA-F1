@@ -54,6 +54,7 @@ public class GetController {
      */
     @RequestMapping("drivers")
     public HashMap[] drivers() {
+        
         HashMap<String, Object>[] arr = new HashMap[10];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = new HashMap<>();
