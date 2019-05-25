@@ -1,8 +1,10 @@
 package orm.entity;
+import orm.db.DBEntity;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Pit_Stop implements DBEntity{
+public class Pit_Stop implements DBEntity {
 
 	static final int STOP = 0;
 	static final int RACE_ID = 1;

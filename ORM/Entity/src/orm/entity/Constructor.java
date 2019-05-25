@@ -1,7 +1,9 @@
 package orm.entity;
+import orm.db.DBEntity;
+
 import java.util.ArrayList;
 
-public class Constructor implements DBEntity{
+public class Constructor implements DBEntity {
 	
 	static final int CONSTRUCTOR_ID = 0;
 	static final int CONSTRUCTOR_REF = 1;

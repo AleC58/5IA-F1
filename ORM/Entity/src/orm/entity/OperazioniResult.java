@@ -1,5 +1,7 @@
 package orm.entity;
 
+import orm.dao.F1_DAO_Implements;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

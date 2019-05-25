@@ -1,5 +1,7 @@
 package orm.entity;
 
+import orm.db.DBEntity;
+
 import java.util.ArrayList;
 
 public class Circuit implements DBEntity {

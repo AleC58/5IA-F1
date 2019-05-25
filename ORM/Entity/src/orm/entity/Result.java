@@ -1,4 +1,6 @@
 package orm.entity;
+import orm.db.DBEntity;
+
 import java.util.ArrayList;
 
 public class Result implements DBEntity {

@@ -1,9 +1,11 @@
 package orm.entity;
+import orm.db.DBEntity;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Race implements DBEntity{
+public class Race implements DBEntity {
 		
 	static final int RACE_ID = 0;	
 	static final int YEAR = 1;
