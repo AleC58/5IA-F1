@@ -5,6 +5,8 @@
  */
 package operazioniutilitydatabase;
 
+import static OperazioniUtilityDataBase.Operazioni.insert;
+
 /**
  *
  * @author riccardo.cozzi
@@ -15,7 +17,11 @@ public class OperazioniUtilityDataBase {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		// TODO code application logic here
+		String nomeTabella="Dati";
+		String[]value=new String[2];
+		value[0]="Mario";
+		//value[1]="Gino";
+		insert(nomeTabella,value);
 	}
 	
 }
