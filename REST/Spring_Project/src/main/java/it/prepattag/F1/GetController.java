@@ -211,7 +211,7 @@ public class GetController {
     }
 
     @RequestMapping("classificagara")
-    public HashMap[] classificaGara(@RequestParam int anno, @RequestParam int tracciato) {
+    public HashMap[] classificaGara(@RequestParam int anno, @RequestParam String tracciato) {
         HashMap<String, Object>[] m = new HashMap[10];
         for (int i = 0; i < m.length; i++) {
             m[i] = new HashMap<>();

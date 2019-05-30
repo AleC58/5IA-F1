@@ -16,8 +16,8 @@ public class Test {
      */
     public static void main(String[] args) {
         F1_DAO_Interface f1 = new F1_DAO_Implements();
-        
-        System.out.println(f1.classificaPilotiS(2010).toString());
+
+        System.out.println(f1.risultatoGara("Circuit de Monaco",2010).toString());
     }
-    
+
 }

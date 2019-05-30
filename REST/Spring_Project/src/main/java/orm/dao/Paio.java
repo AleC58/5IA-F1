@@ -9,11 +9,11 @@ public class Paio<A, B> {
         this.first = first;
         this.second = second;
     }
-    
+
     @Override
     public String toString() {
         String ris = "";
-        ris = "<" + first.toString() + ", " + second.toString();
+        ris = "<" + first.toString() + ", " + second.toString() + ">";
         return ris;
     }
 

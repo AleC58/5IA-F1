@@ -4,22 +4,16 @@ import orm.entity.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * ****************************************************************************************
  *
  * @author Chiara Fanello,Riccardo Forese,Riccardo Potente
- *
  * @version 8.2 *
  * ****************************************************************************************
  * @(#)F1_DAO_Implements.java Implementazione DAO(Data Access Object) e query	*
  * superiori
- *
  * @date 29/04/2019	*
  */
 public class F1_DAO_Implements implements F1_DAO_Interface {
@@ -28,11 +22,11 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * ***********************************************************************************
      * crea la classifica piloti per un determinato anno decrescente
      *
-     * @exception può sollevare SQLException
      * @param anno:Integer che identifica la classifica dell'anno
-     * @return ArrayList<Paio<Integer, Integer>> dove sono inseriti i piloti e
+     * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i piloti e
      * il loro punteggio
      * ************************************************************************************
+     * @throws può sollevare SQLException
      */
     @Override
     public ArrayList<Paio<Integer, Integer>> classificaPilotiS(int anno) {
@@ -52,7 +46,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         }
 
         for (int i = 0; i < app.size(); i++) {
-            int punti = (Integer) ((ArrayList) app.get(i)).get(2);
+            int punti = ((Double) ((ArrayList) app.get(i)).get(1)).intValue();
             ris.add(new Paio((Integer) ((ArrayList) app.get(i)).get(0), punti));
         }
         return ris;
@@ -62,10 +56,10 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * ***********************************************************************************
      * restituisce i piloti di un dato anno
      *
-     * @exception puo sollevare SQLException
      * @param anno:Integer che identifica l'anno
      * @return ArrayList<Integer> dove sono inseriti i piloti
      * ************************************************************************************
+     * @throws puo sollevare SQLException
      */
     @Override
     public ArrayList<Integer> pilotiAnno(int anno) {
@@ -92,20 +86,20 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * ***********************************************************************************
      * crea la classifica piloti per un determinato anno
      *
-     * @exception può sollevare SQLException
      * @param anno:Integer che identifica la classifica dell'anno
-     * @return ArrayList<Paio<Integer, Integer>> dove sono inseriti i piloti e
+     * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i piloti e
      * il loro punteggio
      * ************************************************************************************
+     * @throws può sollevare SQLException
      */
     @Override
     public ArrayList<Paio<Integer, Integer>> classificaCostruttoriS(int anno) {
-        String str = "SELECT DISTINCT Consuctors.constructorId, SUM(punteggio) as Punteggi"
-                + " FROM Constructors INNER JOIN Drivers ON Drivers.driverId = Constructors.constructorId"
-                + " INNER JOIN results ON Constructors.driverId = results.driverId"
+        String str = "SELECT DISTINCT Constructors.constructorId, SUM(points) as Punteggi"
+                + " FROM Constructors INNER JOIN results on Constructors.constructorid = results.constructorid"
+                + " INNER JOIN Drivers ON Drivers.driverId = results.driverId"
                 + " INNER JOIN Races ON results.raceId = Races.raceId"
                 + " WHERE year = " + anno
-                + " GROUP BY Consuctors.constructorId"
+                + " GROUP BY Constructors.constructorId"
                 + " ORDER BY Punteggi DESC";
         ArrayList app = new ArrayList<>();
 
@@ -120,10 +114,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
 
         for (int i = 0; i < app.size(); i++) {
             ArrayList elem = (ArrayList) app.get(i);
-            Constructor a = new Constructor();
-            a.setByDB(elem);
-            int id = a.getConstructorId();
-            ris.add(new Paio(id, elem.get(1)));
+            ris.add(new Paio((((ArrayList) app.get(i)).get(0)), elem.get(1)));
         }
 
         return ris;
@@ -133,20 +124,20 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * ***********************************************************************************
      * crea la classifica piloti in una data gara
      *
-     * @exception può sollevare SQLException
      * @param anno:Integer che identifica la classifica dell'anno
-     * @param nome:String il nome del circuito
-     * @return ArrayList<Paio<Integer, Integer>> dove sono inseriti i piloti e
+     * @param nome:String  il nome del circuito
+     * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i piloti e
      * il loro punteggio
      * ************************************************************************************
+     * @throws può sollevare SQLException
      */
     @Override
     public ArrayList<Paio<Integer, Integer>> risultatoGara(String nome, int anno) {
         String str = "SELECT Drivers.driverId, Results.position"
                 + " FROM Drivers INNER JOIN results ON Drivers.driverId = results.driverId"
                 + " INNER JOIN Races ON results.raceId = Races.raceId"
-                + " WHERE year = " + anno + " AND Races.name = " + nome
-                + " ORDER BY Results.position DESC";
+                + " WHERE year = '" + anno + "' AND Races.name LIKE '" + nome
+                + "' ORDER BY Results.position DESC";
         ArrayList app = new ArrayList<>();
 
         try {
@@ -160,10 +151,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
 
         for (int i = 0; i < app.size(); i++) {
             ArrayList elem = (ArrayList) app.get(i);
-            Driver a = new Driver();
-            a.setByDB(elem);
-            int id = a.getDriverId();
-            ris.add(new Paio(id, elem.get(1)));
+            ris.add(new Paio(elem.get(0), elem.get(1)));
         }
 
         return ris;
@@ -173,9 +161,9 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * ***********************************************************************************
      * restituisce le date ancora da disputare
      *
-     * @exception può sollevare SQLException
      * @return ArrayList<Race> la raccolta delle gare da disputare
      * ************************************************************************************
+     * @throws può sollevare SQLException
      */
     @Override
     public ArrayList<Race> gareDaDisputare() {
@@ -216,7 +204,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * **********************************************************************************
      * restituisce i piloti di un dato costruttore
      *
-     * @param anno:Integer che identifica l'anno
+     * @param anno:Integer            che identifica l'anno
      * @param costruttore:Constructor identifica il costruttore
      * @return ArrayList<Driver> dove sono inseriti i piloti del costruttore
      * ************************************************************************************
@@ -254,7 +242,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * restituisce il costruttore di un pilota in un dato anno
      *
      * @param pilota:Driver che identifica il pilota
-     * @param anno:int l'anno a cui riferirsi
+     * @param anno:int      l'anno a cui riferirsi
      * @return Constructor il costruttore del pilota
      * ***************************************************************************************
      * @throws può sollevare SQLException
@@ -264,8 +252,6 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         String str = "SELECT DISTINCT Constructors.ConstructorId "
                 + "FROM Constructors INNER JOIN results ON Constructors.constructorId = results.constructorId INNER JOIN Races ON Results.RaceId = Races.RaceId "
                 + "WHERE Results.driverId = " + pilota.getDriverId() + " AND year = " + anno;
-
-        Constructor ris = new Constructor();
         ArrayList app = new ArrayList<>();
         try {
             app = (ArrayList) OperazioniDB.getResult(str).toArray()[0];
@@ -273,8 +259,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
             System.err.println("Errore: " + ex.getMessage());
             System.exit(0);
         }
-        ris.setByDB(app);
-        return ris;
+        return infoCostruttore((Integer) app.get(0));
     }
 
     /**
@@ -458,7 +443,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         return ris;
     }
 
-    
+
     /**
      * *************************************************************************************
      * restituisce i piloti in ordine di arrivo di una corsa definita
@@ -494,8 +479,8 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         }
         return ris;
     }
-    
-    
+
+
     /**
      * *************************************************************************************
      * restituisce i punteggi di un pilota per una data stagione
@@ -533,8 +518,8 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         }
         return ris;
     }
-    
-     /**
+
+    /**
      * *************************************************************************************
      * restituisce le posizioni del pilota e le gare a cui il pilota ha
      * partecipato
@@ -577,8 +562,8 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         }
         return ris;
     }
-    
-    
+
+
     /**
      * **********************************************************************************
      * crea la classifica piloti per un determinato anno
@@ -622,4 +607,4 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
    
 */
 
-     }
+}
