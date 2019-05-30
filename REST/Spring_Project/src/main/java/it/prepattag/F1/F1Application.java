@@ -17,7 +17,7 @@ public class F1Application {
              */
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/get/*")
+                registry.addMapping("/get/**")
                         .allowedOrigins("*")
                         .allowedMethods("GET");
             }

@@ -1,5 +1,6 @@
 package it.prepattag.F1;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,8 +60,8 @@ public class GetController {
      *
      * @return Un array di piloti in formato JSON
      */
-    @RequestMapping("drivers")
-    public HashMap[] drivers() {
+    @RequestMapping("drivers/{anno}")
+    public HashMap[] drivers(@PathVariable int anno) {
         HashMap<String, Object>[] arr = new HashMap[idPiloti.size()];
         int i = 0;
         for (int id : idPiloti) {
@@ -99,15 +100,13 @@ public class GetController {
      * @return Un array con n piloti in ordine di punteggio
      */
     @RequestMapping("classificapiloti/{anno}")
-    public HashMap[] classificapiloti() {
+    public HashMap[] classificapiloti(@PathVariable int anno) {
         HashMap<String, Object>[] m = new HashMap[10];
         for (int i = 0; i < m.length; i++) {
             m[i] = new HashMap<>();
             m[i].put("id", 10);
-            m[i].put("idscuderia", 1);
             m[i].put("nome", "Andrea");
             m[i].put("cognome", "Crocco");
-            m[i].put("posizione", "3");
             m[i].put("scuderia", "Ferrari");
             m[i].put("punteggio", "121");
             m[i].put("nazionalita", "Romania");
@@ -121,7 +120,7 @@ public class GetController {
      * @return Un array con le n scuderie in ordine di punteggio
      */
     @RequestMapping("classificascuderie/{anno}")
-    public HashMap[] classificascuderie() {
+    public HashMap[] classificascuderie(@PathVariable int anno) {
         HashMap<String, Object>[] m = new HashMap[10];
         for (int i = 0; i < m.length; i++) {
             m[i] = new HashMap<>();
@@ -138,8 +137,8 @@ public class GetController {
      * @return Un array con id costruttore, nome, compionati vinti dal
      * costruttore, sede, manager, numero di poleposition, [nome cognome pilota 1, nome cognome pilota 2]
      */
-    @RequestMapping("costruttori")
-    public HashMap[] costruttori() {
+    @RequestMapping("scuderie")
+    public HashMap[] scuderie() {
         HashMap<String, Object>[] m = new HashMap[21];
         for (int i = 0; i < m.length; i++) {
             m[i] = new HashMap<>();
@@ -161,8 +160,8 @@ public class GetController {
      * @param id l'id del costruttore
      * @return Le informazioni del costruttore richiesto in formato JSON
      */
-    @RequestMapping(value = "costruttore", params = "id")
-    public Map costruttore(@RequestParam("id") int id) {
+    @RequestMapping(value = "scuderia", params = "id")
+    public Map scuderia(@RequestParam("id") int id) {
         HashMap<String, Object> m = new HashMap(10);
         if (id == 1) {
             long dob = Date.valueOf("2000-07-15").getTime();
@@ -187,11 +186,12 @@ public class GetController {
      * @return Un array con luogo tracciato, nome circuito, data prossimo gran
      * premio e descrizione del percorso
      */
-    @RequestMapping("tracciato")
-    public HashMap[] tracciato() {
+    @RequestMapping("tracciati")
+    public HashMap[] tracciati() {
         HashMap<String, Object>[] m = new HashMap[21];
         for (int i = 0; i < m.length; i++) {
             m[i] = new HashMap<>();
+            m[i].put("id", 12);
             m[i].put("luogo", "Australia");
             m[i].put("circuito", "Melbourne Gran Prix Circuit");
             m[i].put("data", "21");
@@ -200,4 +200,28 @@ public class GetController {
         return m;
     }
 
+    @RequestMapping("tracciato")
+    public HashMap tracciato(@RequestParam int id) {
+        HashMap<String, Object> m = new HashMap();
+        m.put("luogo", "Australia");
+        m.put("circuito", "Melbourne Gran Prix Circuit");
+        m.put("data", "21");
+        m.put("descr", "Il percorso si snoda nel cuore della città di Melbourne ed è ricavato raccordando le strade perimetrali del lago artificiale ricavato nell'Albert Park. Negli altri giorni è adibito alla normale circolazione stradale, eppure l'asfalto dell'Albert Park è tra i meno sconnessi dell'intero Circus.");
+        return m;
+    }
+
+    @RequestMapping("classificagara")
+    public HashMap[] classificaGara(@RequestParam int anno, @RequestParam int tracciato) {
+        HashMap<String, Object>[] m = new HashMap[10];
+        for (int i = 0; i < m.length; i++) {
+            m[i] = new HashMap<>();
+            m[i].put("id", 10);
+            m[i].put("nome", "Andrea");
+            m[i].put("cognome", "Crocco");
+            m[i].put("scuderia", "Ferrari");
+            m[i].put("punteggio", "121");
+            m[i].put("nazionalita", "Romania");
+        }
+        return m;
+    }
 }
