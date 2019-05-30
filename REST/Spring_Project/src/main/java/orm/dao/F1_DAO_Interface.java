@@ -16,23 +16,23 @@ import java.util.HashMap;
  *************************************************************************/
 public interface F1_DAO_Interface {
 
-	abstract HashMap<Driver, Integer> classificaPilotiS(int anno); //--> Classifica Piloti (per Stagione o complessivo)
-
-	abstract HashMap<Constructor, Integer> classificaCostruttoriS(int anno); //--> Classifica Costruttori per stagione
-
-	abstract ArrayList<Driver> pilotiCostruttore(Constructor costruttore, int anno); //--> Dato un costruttore, sapere chi gareggia in una determinata gara
-
-	abstract ArrayList<Driver> classificaGara(Race corsa); //--> Data una gara, sapere l'ordine di arrivo dei piloti
-
-	abstract HashMap<Race, Integer> punteggiPerGara(Driver pilota, int anno); //--> Dato un pilota, sapere i suoi punteggi dal più recente  al meno recente
-	
-	abstract HashMap<Race, Integer> garePerPilota(Driver pilota); //--> Dato un pilota, sapere a quante gare ha partecipato 
-	
-	abstract Constructor costruttorePilota(Driver pilota, int anno); //--> Dato un Pilota restituisce il costruttore dell'anno
-	
-	abstract Driver infoPilota(int indice); //--> Dato l'id restituisce il pilota completo
-	
-	abstract Constructor infoCostruttore(int indice); //--> Dato l'id restituisce il costruttore completo
+	abstract ArrayList<Paio<Integer, Integer>> classificaPilotiS(int anno); //--> Classifica Piloti (per Stagione o complessivo)
+        
+        abstract ArrayList<Integer> pilotiAnno(int anno); //--> Restituisce id piloti in un anno
+        
+        abstract ArrayList<Paio<Integer, Integer>> classificaCostruttoriS(int anno); //--> Classifica dei costruttori
+                
+        abstract ArrayList<Paio<Integer, Integer>> risultatoGara(String nome, int anno); //--> Risultato di una certa gara     
+        
+        abstract ArrayList<Race> gareDaDisputare(); //--> Restituisce la lista delle gare da disputare
+        
+        abstract ArrayList<Driver> pilotiCostruttore(Constructor costruttore, int anno); //--> Restituisce i piloti di un costruttore di un anno
+        
+        abstract Constructor costruttorePilota(Driver pilota, int anno); //--> Restituisce il costruttore di un pilota
+        
+        abstract Driver infoPilota(int indice); //--> Restituisce le info del pilota
+        
+        abstract Constructor infoCostruttore(int indice); //--> Dato l'id restituisce il costruttore completo
 	
 	abstract Race infoCorsa(int indice); //--> Dato l'id restituisce la corsa completa
 	
@@ -43,4 +43,12 @@ public interface F1_DAO_Interface {
 	abstract ArrayList<Integer> indiciTabella(String tab); //--> dato il nome di una tabella restituisce tutti gli indici
 	
 	abstract Result infoRisultato(int indiceR, int indiceD); //--> Dato l'idDriver e idRace restituisce il risultato completo
+
+	abstract ArrayList<Driver> classificaGara(Race corsa); //--> Data una gara, sapere l'ordine di arrivo dei piloti
+
+	abstract HashMap<Race, Integer> punteggiPerGara(Driver pilota, int anno); //--> Dato un pilota, sapere i suoi punteggi dal più recente  al meno recente
+	
+	abstract HashMap<Race, Integer> garePerPilota(Driver pilota); //--> Dato un pilota, sapere a quante gare ha partecipato 
+	
+
 }
