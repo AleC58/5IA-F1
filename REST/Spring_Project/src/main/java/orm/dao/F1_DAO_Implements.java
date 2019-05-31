@@ -133,11 +133,11 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      */
     @Override
     public ArrayList<Paio<Integer, Integer>> risultatoGara(String nome, int anno) {
-        String str = "SELECT Drivers.driverId, Results.position"
+        String str = "SELECT Drivers.driverId, Results.points"
                 + " FROM Drivers INNER JOIN results ON Drivers.driverId = results.driverId"
                 + " INNER JOIN Races ON results.raceId = Races.raceId INNER JOIN Circuits ON Races.circuitId = Circuits.circuitId"
-                + " WHERE year = '" + anno + "' AND Circuits.name LIKE '" + nome
-                + "' ORDER BY Results.position DESC";
+                + " WHERE year = " + anno + " AND Circuits.name LIKE \"" + nome
+                + "\" ORDER BY Results.position DESC";
         ArrayList app = new ArrayList<>();
 
         try {
