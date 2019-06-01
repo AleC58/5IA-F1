@@ -4,6 +4,7 @@ import orm.entity.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -160,21 +161,21 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
     /**
      * ***********************************************************************************
      * restituisce le date ancora da disputare
-     *
+     * (Serve un controllo per trovare i giorni rimanenti prima di una certa gara)
      * @return ArrayList<Race> la raccolta delle gare da disputare
      * ************************************************************************************
      * @throws può sollevare SQLException
      */
     @Override
     public ArrayList<Race> gareDaDisputare() {
+		
+		GregorianCalendar data = new GregorianCalendar();
+		java.util.Date dataOdierna =  (java.util.Date) data.getTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String s = sdf.format(dataOdierna);
 
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"), Locale.ITALY);
-        Date today = (Date) calendar.getTime();
-
-        String str = "SELECT Races.raceId, Races.Date, Results.position"
-                + " FROM Races INNER JOIN Results ON Races.raceId = Results.resultsId"; //IO PASSO TUTTO, NON SO CHE GENERE DI CRITERIO AVETE USATO PER LE DATE NEL DATABASE
-        //QUINDI VI PASSO TUTTE LE GARE E POI VA INSERITO NEL FOR UN IF CHE CONTROLLA SE LA DATA
-        //è MINORE DELL'ATTUALE
+        String str = "SELECT Races.raceId, Races.Date"
+                + " FROM Races"; 
 
         ArrayList app = new ArrayList<>();
 
@@ -190,11 +191,16 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         for (int i = 0; i < app.size(); i++) {
             ArrayList elem = (ArrayList) app.get(i);
             Race a = new Race();
-            a.setByDB(elem);
-            java.util.Date data = a.getDate(); //SE SERVE QUESTA è LA DATA DELLA GARA
-            if (data.before(today)) {
-                ris.add(a);     //NON SO SE SIA GIUSTO
+			String d = (String) ((ArrayList) app.get(i)).get(1);
+			System.out.println("Data: " + i + " ::: " + d);
+			a.setRaceId((Integer) ((ArrayList) app.get(i)).get(0)); 
+            a.setDate(Date.valueOf((String) ((ArrayList) app.get(i)).get(1))); 
+			
+            if (d.compareTo(s) > 0) {
+                ris.add(a);
             }
+			
+			//MANCA DA AGGIUNGERE I GIORNI CHE MANCANO ALLE VARIE GARE DA DISPUTARE
         }
 
         return ris;
