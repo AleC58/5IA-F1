@@ -5,6 +5,11 @@
  */
 package orm.dao;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import orm.entity.Constructor;
+
 /**
  *
  * @author Riccardo Forese
@@ -16,6 +21,11 @@ public class Test {
      */
     public static void main(String[] args) {
         F1_DAO_Interface f1 = new F1_DAO_Implements();
+		
+		Constructor c = new Constructor();
+		c.setConstructorId(1);
+		
+		System.out.println(f1.pilotiCostruttore(c, 2010).toString());
 
         System.out.println(f1.risultatoGara("Circuit de Monaco",2010).toString());
     }

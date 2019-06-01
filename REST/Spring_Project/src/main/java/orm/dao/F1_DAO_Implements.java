@@ -87,7 +87,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * crea la classifica piloti per un determinato anno
      *
      * @param anno:Integer che identifica la classifica dell'anno
-     * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i piloti e
+     * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i costruttori e
      * il loro punteggio
      * ************************************************************************************
      * @throws può sollevare SQLException
@@ -137,7 +137,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
                 + " FROM Drivers INNER JOIN results ON Drivers.driverId = results.driverId"
                 + " INNER JOIN Races ON results.raceId = Races.raceId INNER JOIN Circuits ON Races.circuitId = Circuits.circuitId"
                 + " WHERE year = " + anno + " AND Circuits.name LIKE \"" + nome
-                + "\" ORDER BY Results.position DESC";
+                + "\" ORDER BY Results.points DESC";
         ArrayList app = new ArrayList<>();
 
         try {
@@ -204,7 +204,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * **********************************************************************************
      * restituisce i piloti di un dato costruttore
      *
-     * @param anno:Integer            che identifica l'anno
+     * @param anno:Integer che identifica l'anno
      * @param costruttore:Constructor identifica il costruttore
      * @return ArrayList<Driver> dove sono inseriti i piloti del costruttore
      * ************************************************************************************
@@ -242,7 +242,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * restituisce il costruttore di un pilota in un dato anno
      *
      * @param pilota:Driver che identifica il pilota
-     * @param anno:int      l'anno a cui riferirsi
+     * @param anno:int l'anno a cui riferirsi
      * @return Constructor il costruttore del pilota
      * ***************************************************************************************
      * @throws può sollevare SQLException
