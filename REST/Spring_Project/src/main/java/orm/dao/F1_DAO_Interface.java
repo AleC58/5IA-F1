@@ -50,5 +50,11 @@ public interface F1_DAO_Interface {
 	
 	abstract HashMap<Race, Integer> garePerPilota(Driver pilota); //--> Dato un pilota, sapere a quante gare ha partecipato 
 	
+	
+	/*
+	abstract ArrayList<User> utente(); //--> restituisce tutti gli utenti presenti nel database per controllo su username e password
+	
+	abstract boolean aggiungiUtente(String nome, String cognome, String username, String password); //--> registra un nuovo utente
+	*/
 
 }
