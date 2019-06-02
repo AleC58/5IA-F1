@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import orm.dao.F1_DAO_Implements;
+import orm.dao.Paio;
 import orm.entity.Driver;
 import orm.entity.Race;
 import orm.entity.Result;
@@ -22,7 +23,6 @@ import java.util.Map;
  */
 public class GetController {
     F1_DAO_Implements impl = new F1_DAO_Implements();
-    ArrayList<Integer> idPiloti = impl.indiciTabella("Drivers");
 
     /**
      * Mapping per la richiesta delle informazioni di un pilota
@@ -32,8 +32,9 @@ public class GetController {
      */
     @RequestMapping(value = "driver", params = "id")
     public Map driver(@RequestParam("id") int id) {
-        HashMap<String, Object> m = new HashMap(10);
-        if (id == 10) {
+        HashMap<String, Object> m = new HashMap(12);
+        Driver d = impl.infoPilota(id);
+        if (d != null) {
             long dob = Date.valueOf("2000-07-15").getTime();
             long diff = Date.valueOf(LocalDate.now()).getTime() - dob;
             int age = (int) Math.floor(diff / 3.15576e+10);
@@ -62,25 +63,26 @@ public class GetController {
      */
     @RequestMapping("drivers/{anno}")
     public HashMap[] drivers(@PathVariable int anno) {
+        ArrayList<Integer> idPiloti = impl.pilotiAnno(anno);
         HashMap<String, Object>[] arr = new HashMap[idPiloti.size()];
-        int i = 0;
-        for (int id : idPiloti) {
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = new HashMap<>();
-            Driver d = impl.infoPilota(id);
+            Driver d = impl.infoPilota(idPiloti.get(i));
             long dob = d.getDob().getTime();
             long diff = Date.valueOf(LocalDate.now()).getTime() - dob;
             int age = (int) Math.floor(diff / 3.15576e+10);
             HashMap<Race, Integer> gare = impl.garePerPilota(d);
             Race lastrace = (Race) gare.keySet().toArray()[gare.keySet().size() - 1];
-            Result res = impl.infoRisultato(lastrace.getRaceId(), id);
+            Result res = impl.infoRisultato(lastrace.getRaceId(), d.getDriverId());
             int garevinte = (int) gare.entrySet().stream()
                     .filter(pos -> pos.getValue() == 1)
                     .count();
             int podi = (int) gare.entrySet().stream()
                     .filter(pos -> pos.getValue() >= 1 && pos.getValue() <= 3)
                     .count();
+
             arr[i].put("age", age);
-            arr[i].put("id", id);
+            arr[i].put("id", d.getDriverId());
             arr[i].put("forename", d.getForename());
             arr[i].put("surname", d.getSurname());
             arr[i].put("nationality", d.getNationality());
@@ -88,7 +90,6 @@ public class GetController {
             arr[i].put("granpremivinti", garevinte);
             arr[i].put("numerogare", gare.size());
             arr[i].put("numeropodi", podi);
-            i++;
         }
         return arr;
     }
@@ -101,15 +102,17 @@ public class GetController {
      */
     @RequestMapping("classificapiloti/{anno}")
     public HashMap[] classificapiloti(@PathVariable int anno) {
-        HashMap<String, Object>[] m = new HashMap[10];
+        ArrayList<Paio<Integer, Integer>> idPiloti = impl.classificaPilotiS(anno);
+        HashMap<String, Object>[] m = new HashMap[idPiloti.size()];
         for (int i = 0; i < m.length; i++) {
+            Driver d = impl.infoPilota(idPiloti.get(i).first);
             m[i] = new HashMap<>();
-            m[i].put("id", 10);
-            m[i].put("nome", "Andrea");
-            m[i].put("cognome", "Crocco");
-            m[i].put("scuderia", "Ferrari");
-            m[i].put("punteggio", "121");
-            m[i].put("nazionalita", "Romania");
+            m[i].put("id", d.getDriverId());
+            m[i].put("nome", d.getForename());
+            m[i].put("cognome", d.getSurname());
+            m[i].put("scuderia", impl.costruttorePilota(d, anno).getName());
+            m[i].put("punteggio", idPiloti.get(i).second);
+            m[i].put("nazionalita", d.getNationality());
         }
         return m;
     }
