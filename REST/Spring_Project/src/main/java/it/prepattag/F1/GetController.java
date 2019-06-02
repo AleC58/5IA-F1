@@ -64,6 +64,7 @@ public class GetController {
             m.put("datanascita", format.format(d.getDob()));
             m.put("numerogare", gare.size());
             m.put("granpremivinti", garevinte);
+            m.put("numero", d.getNumber());
         } else {
             m.put("error", "Id inesistente (id test: 10 | Development purpose only)");
         }
