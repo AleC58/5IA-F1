@@ -24,9 +24,9 @@ import java.util.Map;
  * Classe che gestisce le richieste get (/get/<attributo>) della API
  */
 public class GetController {
+
     F1_DAO_Implements impl = new F1_DAO_Implements();
     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
 
     /**
      * Mapping per la richiesta delle informazioni di un pilota
@@ -111,8 +111,8 @@ public class GetController {
     }
 
     /**
-     * Mapping per la richiesta della classifica dei piloti in base all'anno (posizione nome
-     * cognome punteggio, id, id scuderia)
+     * Mapping per la richiesta della classifica dei piloti in base all'anno
+     * (posizione nome cognome punteggio, id, id scuderia)
      *
      * @return Un array con n piloti in ordine di punteggio
      */
@@ -156,20 +156,20 @@ public class GetController {
      * Mapping per la richiesta di tutti i costruttori
      *
      * @return Un array con id costruttore, nome, compionati vinti dal
-     * costruttore, sede, manager, numero di poleposition, [nome cognome pilota 1, nome cognome pilota 2]
+     * costruttore, sede, manager, numero di poleposition, [nome cognome pilota
+     * 1, nome cognome pilota 2]
      */
-    @RequestMapping("scuderie")
-    public HashMap<String, Object>[] scuderie() {
+    @RequestMapping("scuderie/{anno}")
+    public HashMap<String, Object>[] scuderie(@PathVariable int anno) {
         ArrayList<Integer> ids = impl.indiciTabella("constructors");
         HashMap<String, Object>[] m = new HashMap[21];
         for (int i = 0; i < m.length; i++) {
             Constructor c = impl.infoCostruttore(ids.get(i));
             m[i] = new HashMap<>();
             m[i].put("id", c.getConstructorId());
-            m[i].put("campionativinti", "15");
             m[i].put("nome", c.getName());
-            m[i].put("poleposition", "15");
-            ArrayList<Driver> l = impl.pilotiCostruttore(c, LocalDate.now().getYear());
+            ArrayList<Driver> l = impl.pilotiCostruttore(c, anno);
+            m[i].put("campionativinti", granPremiVintiScuderia(l, anno));
             String[] piloti = new String[l.size()];
             for (int j = 0; j < piloti.length; j++) {
                 piloti[j] = l.get(j).getForename() + " " + l.get(j).getSurname();
@@ -183,26 +183,35 @@ public class GetController {
     /**
      * Mapping per la richiesta delle informazioni di un costruttore
      *
-     * @param id l'id del costruttore
+     * @param id l'id del costruttore / campionati vinti nazione
      * @return Le informazioni del costruttore richiesto in formato JSON
      */
-    @RequestMapping(value = "scuderia", params = "id")
-    public Map scuderia(@RequestParam("id") int id) {
-        HashMap<String, Object> m = new HashMap(10);
-        if (id == 1) {
-            long dob = Date.valueOf("2000-07-15").getTime();
-            long diff = Date.valueOf(LocalDate.now()).getTime() - dob;
-            int age = (int) Math.floor(diff / 3.15576e+10);
-            m.put("id", 1);
-            m.put("campionativinti", "15");
-            m.put("nome", "Lamborghini");
-            m.put("sede", "Campagna Lupia");
-            m.put("manager", "Tony Buerin");
-            m.put("poleposition", "15");
-        } else {
-            m.put("error", "Id inesistente (id test: 10 | Development purpose only)");
+    @RequestMapping("scuderia")
+    public HashMap<String, Object> scuderia(@RequestParam("id") int id, @RequestParam("anno") int anno) {
+        HashMap<String, Object> m = new HashMap();
+        Constructor c = impl.infoCostruttore(id);
+        ArrayList<Driver> l = impl.pilotiCostruttore(c, anno);
+        String[] piloti = new String[l.size()];
+        for (int j = 0; j < piloti.length; j++) {
+            piloti[j] = l.get(j).getForename() + " " + l.get(j).getSurname();
         }
+        m.put("piloti", piloti);
+        m.put("id", c.getConstructorId());
+        m.put("nome", c.getName());
+        m.put("nazione", c.getNationality());
+        m.put("granpremivinti", granPremiVintiScuderia(l, anno));
         return m;
+    }
+
+    private int granPremiVintiScuderia(ArrayList<Driver> d, int anno) {
+        int gpv = 0;
+        for (Driver i : d) {
+            HashMap<Race, Integer> gare = impl.garePerPilota(i);
+            gpv += (int) gare.entrySet().stream()
+                    .filter(pos -> pos.getValue() == 1)
+                    .count();
+        }
+        return gpv;
     }
 
     /**
