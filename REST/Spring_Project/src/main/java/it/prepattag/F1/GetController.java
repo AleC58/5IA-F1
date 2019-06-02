@@ -12,6 +12,7 @@ import orm.entity.Race;
 import orm.entity.Result;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ import java.util.Map;
  */
 public class GetController {
     F1_DAO_Implements impl = new F1_DAO_Implements();
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
 
     /**
      * Mapping per la richiesta delle informazioni di un pilota
@@ -58,7 +61,7 @@ public class GetController {
             m.put("scuderia", c == null ? "null" : c.getName());
             m.put("numeropodi", podi);
             m.put("punti", impl.puntiPilotaS(d.getDriverId(), annocorrente));
-            m.put("datanascita", d.getDob());
+            m.put("datanascita", format.format(d.getDob()));
             m.put("numerogare", gare.size());
             m.put("granpremivinti", garevinte);
         } else {
