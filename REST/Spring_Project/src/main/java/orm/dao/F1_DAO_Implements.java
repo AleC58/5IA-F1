@@ -31,7 +31,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
 	 */
 	@Override
 	public ArrayList<Paio<Integer, Integer>> classificaPilotiS(int anno) {
-		String str = "SELECT Drivers.driverId,SUM(points) AS punteggio"
+		String str = "SELECT DISTINCT Drivers.driverId,SUM(points) AS punteggio"
 				+ " FROM Drivers INNER JOIN results ON Drivers.driverId = results.driverId"
 				+ " INNER JOIN Races ON results.raceId = Races.raceId"
 				+ " WHERE year = " + anno

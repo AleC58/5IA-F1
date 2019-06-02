@@ -26,11 +26,11 @@ public class Test {
 		c.setConstructorId(1);
 		
 		
-		System.out.println(f1.gareDaDisputare());
+		//System.out.println(f1.gareDaDisputare());
 		
-		System.out.println(f1.pilotiCostruttore(c, 2010));
+		System.out.println(f1.classificaPilotiS(2010));
 
-        System.out.println(f1.risultatoGara("Circuit de Monaco",2010).toString());
+        //System.out.println(f1.risultatoGara("Circuit de Monaco",2010).toString());
     }
 
 }
