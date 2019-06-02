@@ -61,7 +61,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * ***********************************************************************************
      * crea la classifica piloti per un determinato anno decrescente
      *
-     * @param anno:Integer che identifica la classifica dell'anno
+     * @param anno:Integer     che identifica la classifica dell'anno
      * @param pilotaId:Integer che identifica il pilota
      * @return int il punteggio del pilota
      * ************************************************************************************
@@ -74,18 +74,18 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
                 + " INNER JOIN Races ON results.raceId = Races.raceId"
                 + " WHERE year = " + anno + " AND Drivers.driverId = " + pilotaId
                 + " GROUP BY surname,Drivers.driverId";
-        
+
         int ris = 0;
         ArrayList app = new ArrayList<>();
-        
+
         try {
             app = OperazioniDB.getResult(str);
         } catch (SQLException ex) {
             System.err.println("Errore: " + ex.getMessage());
             System.exit(0);
         }
-        
-        if(!app.isEmpty()) {
+
+        if (!app.isEmpty()) {
             int punti = ((Double) ((ArrayList) app.get(0)).get(0)).intValue();
             ris = punti;
         }
@@ -165,7 +165,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * crea la classifica piloti in una data gara
      *
      * @param anno:Integer che identifica la classifica dell'anno
-     * @param nome:String il nome del circuito
+     * @param nome:String  il nome del circuito
      * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i piloti e
      * il loro punteggio
      * ************************************************************************************
@@ -250,7 +250,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * **********************************************************************************
      * restituisce i piloti di un dato costruttore
      *
-     * @param anno:Integer che identifica l'anno
+     * @param anno:Integer            che identifica l'anno
      * @param costruttore:Constructor identifica il costruttore
      * @return ArrayList<Driver> dove sono inseriti i piloti del costruttore
      * ************************************************************************************
@@ -288,7 +288,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * restituisce il costruttore di un pilota in un dato anno
      *
      * @param pilota:Driver che identifica il pilota
-     * @param anno:int l'anno a cui riferirsi
+     * @param anno:int      l'anno a cui riferirsi
      * @return Constructor il costruttore del pilota
      * ***************************************************************************************
      * @throws può sollevare SQLException
@@ -298,14 +298,14 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         String str = "SELECT DISTINCT Constructors.ConstructorId "
                 + "FROM Constructors INNER JOIN results ON Constructors.constructorId = results.constructorId INNER JOIN Races ON Results.RaceId = Races.RaceId "
                 + "WHERE Results.driverId = " + pilota.getDriverId() + " AND year = " + anno;
-        ArrayList app = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> app = new ArrayList<>();
         try {
             app = OperazioniDB.getResult(str);
         } catch (SQLException ex) {
             System.err.println("Errore: " + ex.getMessage());
             System.exit(0);
         }
-        return app.isEmpty() ? null : infoCostruttore((Integer) app.get(0));
+        return app.isEmpty() ? null : infoCostruttore(app.get(0).get(0));
     }
 
     /**
@@ -534,7 +534,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * restituisce i punteggi di un pilota per una data stagione
      *
      * @param pilota:Driver che identifica il pilota
-     * @param anno:Integer indica l'anno di riferimento
+     * @param anno:Integer  indica l'anno di riferimento
      * @return HashMap<Race, Integer> dove sono inserite le corse e i relativi
      * punteggi
      * ***************************************************************************************

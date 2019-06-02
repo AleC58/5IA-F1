@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import orm.dao.F1_DAO_Implements;
 import orm.dao.Paio;
+import orm.entity.Constructor;
 import orm.entity.Driver;
 import orm.entity.Race;
 import orm.entity.Result;
@@ -39,26 +40,27 @@ public class GetController {
             long diff = Date.valueOf(LocalDate.now()).getTime() - dob;
             int age = (int) Math.floor(diff / 3.15576e+10);
             HashMap<Race, Integer> gare = impl.garePerPilota(d);
-            int garevinte = (int) gare.entrySet().stream()
-                    .filter(pos -> pos.getValue() == 1)
-                    .count();
             int podi = (int) gare.entrySet().stream()
                     .filter(pos -> pos.getValue() >= 1 && pos.getValue() <= 3)
                     .count();
+            int garevinte = (int) gare.entrySet().stream()
+                    .filter(pos -> pos.getValue() == 1)
+                    .count();
+            int annocorrente = LocalDate.now().getYear();
 
+            Constructor c = impl.costruttorePilota(d, annocorrente);
 
             m.put("age", age);
             m.put("id", d.getDriverId());
             m.put("forename", d.getForename());
             m.put("surname", d.getSurname());
             m.put("nationality", d.getNationality());
-            m.put("scuderia", impl.costruttorePilota(d, LocalDate.now().getYear()).getName());
+            m.put("scuderia", c == null ? "null" : c.getName());
             m.put("numeropodi", podi);
-            //m.put("punti", );
-            m.put("luogonascita", "Bologna");
-            m.put("datanascita", "15/05/1988");
-            m.put("numerogare", "65");
-            m.put("granpremivinti", "13");
+            m.put("punti", impl.puntiPilotaS(d.getDriverId(), annocorrente));
+            m.put("datanascita", d.getDob());
+            m.put("numerogare", gare.size());
+            m.put("granpremivinti", garevinte);
         } else {
             m.put("error", "Id inesistente (id test: 10 | Development purpose only)");
         }
@@ -133,12 +135,14 @@ public class GetController {
      */
     @RequestMapping("classificascuderie/{anno}")
     public HashMap[] classificascuderie(@PathVariable int anno) {
-        HashMap<String, Object>[] m = new HashMap[10];
+        ArrayList<Paio<Integer, Integer>> classifica = impl.classificaCostruttoriS(anno);
+        HashMap<String, Object>[] m = new HashMap[classifica.size()];
         for (int i = 0; i < m.length; i++) {
+            Constructor c = impl.infoCostruttore(classifica.get(i).first);
             m[i] = new HashMap<>();
-            m[i].put("nome", "Ferrari");
-            m[i].put("punteggio", 155);
-            m[i].put("id", 1);
+            m[i].put("nome", c.getName());
+            m[i].put("punteggio", classifica.get(i).second);
+            m[i].put("id", c.getConstructorId());
         }
         return m;
     }
@@ -150,17 +154,22 @@ public class GetController {
      * costruttore, sede, manager, numero di poleposition, [nome cognome pilota 1, nome cognome pilota 2]
      */
     @RequestMapping("scuderie")
-    public HashMap[] scuderie() {
+    public HashMap<String, Object>[] scuderie() {
+        ArrayList<Integer> ids = impl.indiciTabella("constructors");
         HashMap<String, Object>[] m = new HashMap[21];
         for (int i = 0; i < m.length; i++) {
+            Constructor c = impl.infoCostruttore(ids.get(i));
             m[i] = new HashMap<>();
-            m[i].put("id", 1);
+            m[i].put("id", c.getConstructorId());
             m[i].put("campionativinti", "15");
-            m[i].put("nome", "Lamborghini");
-            m[i].put("sede", "Campagna Lupia");
-            m[i].put("manager", "Tony Buerin");
+            m[i].put("nome", c.getName());
             m[i].put("poleposition", "15");
-            m[i].put("piloti", new String[]{"Andrea Crocco", "Cuin Luca"});
+            ArrayList<Driver> l = impl.pilotiCostruttore(c, LocalDate.now().getYear());
+            String[] piloti = new String[l.size()];
+            for (int j = 0; j < piloti.length; j++) {
+                piloti[j] = l.get(j).getForename() + " " + l.get(j).getSurname();
+            }
+            m[i].put("piloti", piloti);
 
         }
         return m;
