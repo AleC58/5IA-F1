@@ -300,12 +300,12 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
                 + "WHERE Results.driverId = " + pilota.getDriverId() + " AND year = " + anno;
         ArrayList app = new ArrayList<>();
         try {
-            app = (ArrayList) OperazioniDB.getResult(str).toArray()[0];
+            app = OperazioniDB.getResult(str);
         } catch (SQLException ex) {
             System.err.println("Errore: " + ex.getMessage());
             System.exit(0);
         }
-        return infoCostruttore((Integer) app.get(0));
+        return app.isEmpty() ? null : infoCostruttore((Integer) app.get(0));
     }
 
     /**

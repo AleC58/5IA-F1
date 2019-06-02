@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import orm.entity.Constructor;
+import orm.entity.Driver;
 
 /**
  *
@@ -22,11 +23,12 @@ public class Test {
     public static void main(String[] args) {
         F1_DAO_Interface f1 = new F1_DAO_Implements();
 		
-		Constructor c = new Constructor();
-		c.setConstructorId(1);
+		Driver c = new Driver();
+		c.setDriverId(1);
 		
 		
-		//System.out.println(f1.gareDaDisputare());
+		System.out.println(f1.costruttorePilota(c, 2019));
+                
                 
                 System.out.println(f1.puntiPilotaS(100, 2010));
 		
