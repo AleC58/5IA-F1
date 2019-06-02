@@ -58,13 +58,12 @@ public class GetController {
             m.put("forename", d.getForename());
             m.put("surname", d.getSurname());
             m.put("nationality", d.getNationality());
-            m.put("scuderia", c == null ? "null" : c.getName());
+            m.put("scuderia", c == null ? null : c.getName());
             m.put("numeropodi", podi);
             m.put("punti", impl.puntiPilotaS(d.getDriverId(), annocorrente));
             m.put("datanascita", format.format(d.getDob()));
             m.put("numerogare", gare.size());
             m.put("granpremivinti", garevinte);
-            m.put("numero", d.getNumber());
         } else {
             m.put("error", "Id inesistente (id test: 10 | Development purpose only)");
         }
