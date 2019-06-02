@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import orm.entity.Circuit;
 
 @RestController
 @RequestMapping("get")
@@ -223,27 +224,32 @@ public class GetController {
      * @return Un array con luogo tracciato, nome circuito, data prossimo gran
      * premio e descrizione del percorso
      */
-    @RequestMapping("tracciati")
-    public HashMap[] tracciati() {
-        HashMap<String, Object>[] m = new HashMap[21];
-        for (int i = 0; i < m.length; i++) {
-            m[i] = new HashMap<>();
-            m[i].put("id", 12);
-            m[i].put("luogo", "Australia");
-            m[i].put("circuito", "Melbourne Gran Prix Circuit");
-            m[i].put("data", "21");
-            m[i].put("descr", "Il percorso si snoda nel cuore della città di Melbourne ed è ricavato raccordando le strade perimetrali del lago artificiale ricavato nell'Albert Park. Negli altri giorni è adibito alla normale circolazione stradale, eppure l'asfalto dell'Albert Park è tra i meno sconnessi dell'intero Circus.");
+    @RequestMapping("tracciati/{anno}")
+    public ArrayList<HashMap<String, Object>> tracciati(@PathVariable int anno) {
+        ArrayList<Integer> ids = impl.indiciTabella("circuits");
+        ArrayList<HashMap<String, Object>> m = new ArrayList<>(ids.size());
+        for (int i = 0; i < ids.size(); i++) {
+            Circuit c = impl.infoCircuito(ids.get(i));
+            m.add(new HashMap<>());
+            HashMap t = m.get(m.size() - 1);
+            t.put("id", c.getCircuitId());
+            t.put("nome", c.getName());
+            t.put("nazione", c.getCountry());
+            t.put("location", c.getLocation());
+            t.put("url", c.getUrl());
         }
         return m;
     }
 
     @RequestMapping("tracciato")
-    public HashMap tracciato(@RequestParam int id) {
+    public HashMap tracciato(@RequestParam("id") int id) {
         HashMap<String, Object> m = new HashMap();
-        m.put("luogo", "Australia");
-        m.put("circuito", "Melbourne Gran Prix Circuit");
-        m.put("data", "21");
-        m.put("descr", "Il percorso si snoda nel cuore della città di Melbourne ed è ricavato raccordando le strade perimetrali del lago artificiale ricavato nell'Albert Park. Negli altri giorni è adibito alla normale circolazione stradale, eppure l'asfalto dell'Albert Park è tra i meno sconnessi dell'intero Circus.");
+        Circuit c = impl.infoCircuito(id);
+        m.put("id", c.getCircuitId());
+        m.put("nome", c.getName());
+        m.put("nazione", c.getCountry());
+        m.put("location", c.getLocation());
+        m.put("url", c.getUrl());
         return m;
     }
 
