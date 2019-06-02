@@ -26,7 +26,6 @@ public class Driver implements DBEntity {
     private Date dob;
     private String nationality;
     private String url;
-    private Integer punti;
 
     public void setSurname(String surname) {
         this.surname = surname;
@@ -37,10 +36,6 @@ public class Driver implements DBEntity {
     }
 
     public Driver() {
-    }
-
-    public Integer getPoints(int year) {
-        return punti;
     }
 
     public Integer getDriverId() {

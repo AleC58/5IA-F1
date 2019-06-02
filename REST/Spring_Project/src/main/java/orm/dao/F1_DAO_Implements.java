@@ -67,7 +67,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      */
     @Override
     public ArrayList<Integer> pilotiAnno(int anno) {
-        String str = "SELECT Drivers.driverId"
+        String str = "SELECT DISTINCT Drivers.driverId"
                 + " FROM Drivers INNER JOIN results ON Drivers.driverId = results.driverId"
                 + " INNER JOIN Races ON results.raceId = Races.raceId"
                 + " WHERE year = " + anno;

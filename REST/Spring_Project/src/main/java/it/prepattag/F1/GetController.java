@@ -35,17 +35,26 @@ public class GetController {
         HashMap<String, Object> m = new HashMap(12);
         Driver d = impl.infoPilota(id);
         if (d != null) {
-            long dob = Date.valueOf("2000-07-15").getTime();
+            long dob = d.getDob().getTime();
             long diff = Date.valueOf(LocalDate.now()).getTime() - dob;
             int age = (int) Math.floor(diff / 3.15576e+10);
+            HashMap<Race, Integer> gare = impl.garePerPilota(d);
+            int garevinte = (int) gare.entrySet().stream()
+                    .filter(pos -> pos.getValue() == 1)
+                    .count();
+            int podi = (int) gare.entrySet().stream()
+                    .filter(pos -> pos.getValue() >= 1 && pos.getValue() <= 3)
+                    .count();
+
+
             m.put("age", age);
-            m.put("id", 10);
-            m.put("forename", "Andrea");
-            m.put("surname", "Crocco");
-            m.put("nationality", "IT");
-            m.put("scuderia", "Ferrari");
-            m.put("numeropodi", "15");
-            m.put("punti", "32");
+            m.put("id", d.getDriverId());
+            m.put("forename", d.getForename());
+            m.put("surname", d.getSurname());
+            m.put("nationality", d.getNationality());
+            m.put("scuderia", impl.costruttorePilota(d, LocalDate.now().getYear()).getName());
+            m.put("numeropodi", podi);
+            //m.put("punti", );
             m.put("luogonascita", "Bologna");
             m.put("datanascita", "15/05/1988");
             m.put("numerogare", "65");
