@@ -27,10 +27,12 @@ public class Test {
 		
 		
 		//System.out.println(f1.gareDaDisputare());
+                
+                System.out.println(f1.puntiPilotaS(100, 2010));
 		
 		System.out.println(f1.classificaPilotiS(2010));
 
-        //System.out.println(f1.risultatoGara("Circuit de Monaco",2010).toString());
+        System.out.println(f1.risultatoGara("Circuit de Monaco",2010).toString());
     }
 
 }

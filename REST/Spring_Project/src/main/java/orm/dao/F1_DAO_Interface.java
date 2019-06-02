@@ -18,6 +18,8 @@ public interface F1_DAO_Interface {
 
 	abstract ArrayList<Paio<Integer, Integer>> classificaPilotiS(int anno); //--> Classifica Piloti (per Stagione o complessivo)
         
+        abstract int puntiPilotaS(int pilotaId, int anno); //--> Punteggio di un singolo pilota di un dato anno
+        
         abstract ArrayList<Integer> pilotiAnno(int anno); //--> Restituisce id piloti in un anno
         
         abstract ArrayList<Paio<Integer, Integer>> classificaCostruttoriS(int anno); //--> Classifica dei costruttori

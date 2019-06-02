@@ -20,38 +20,74 @@ import java.util.HashMap;
  * @date 29/04/2019	*
  */
 public class F1_DAO_Implements implements F1_DAO_Interface {
+
     HashMap<Integer, Driver> drivers = new HashMap<>(20);
 
-	/**
-	 * ***********************************************************************************
-	 * crea la classifica piloti per un determinato anno decrescente
-	 *
-	 * @param anno:Integer che identifica la classifica dell'anno
-	 * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i piloti e
-	 * il loro punteggio
-	 * ************************************************************************************
-	 * @throws può sollevare SQLException
-	 */
-	@Override
-	public ArrayList<Paio<Integer, Integer>> classificaPilotiS(int anno) {
-		String str = "SELECT DISTINCT Drivers.driverId,SUM(points) AS punteggio"
-				+ " FROM Drivers INNER JOIN results ON Drivers.driverId = results.driverId"
-				+ " INNER JOIN Races ON results.raceId = Races.raceId"
-				+ " WHERE year = " + anno
-				+ " GROUP BY surname,Drivers.driverId"
-				+ " ORDER BY punteggio DESC";
-		ArrayList<Paio<Integer, Integer>> ris = new ArrayList<>();
-		ArrayList app = new ArrayList<>();
-		try {
-			app = OperazioniDB.getResult(str);
-		} catch (SQLException ex) {
-			System.err.println("Errore: " + ex.getMessage());
-			System.exit(0);
-		}
+    /**
+     * ***********************************************************************************
+     * crea la classifica piloti per un determinato anno decrescente
+     *
+     * @param anno:Integer che identifica la classifica dell'anno
+     * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i piloti e
+     * il loro punteggio
+     * ************************************************************************************
+     * @throws può sollevare SQLException
+     */
+    @Override
+    public ArrayList<Paio<Integer, Integer>> classificaPilotiS(int anno) {
+        String str = "SELECT DISTINCT Drivers.driverId,SUM(points) AS punteggio"
+                + " FROM Drivers INNER JOIN results ON Drivers.driverId = results.driverId"
+                + " INNER JOIN Races ON results.raceId = Races.raceId"
+                + " WHERE year = " + anno
+                + " GROUP BY surname,Drivers.driverId"
+                + " ORDER BY punteggio DESC";
+        ArrayList<Paio<Integer, Integer>> ris = new ArrayList<>();
+        ArrayList app = new ArrayList<>();
+        try {
+            app = OperazioniDB.getResult(str);
+        } catch (SQLException ex) {
+            System.err.println("Errore: " + ex.getMessage());
+            System.exit(0);
+        }
 
         for (int i = 0; i < app.size(); i++) {
             int punti = ((Double) ((ArrayList) app.get(i)).get(1)).intValue();
             ris.add(new Paio((Integer) ((ArrayList) app.get(i)).get(0), punti));
+        }
+        return ris;
+    }
+
+    /**
+     * ***********************************************************************************
+     * crea la classifica piloti per un determinato anno decrescente
+     *
+     * @param anno:Integer che identifica la classifica dell'anno
+     * @param pilotaId:Integer che identifica il pilota
+     * @return int il punteggio del pilota
+     * ************************************************************************************
+     * @throws può sollevare SQLException
+     */
+    @Override
+    public int puntiPilotaS(int pilotaId, int anno) {
+        String str = "SELECT DISTINCT SUM(points) AS punteggio"
+                + " FROM Drivers INNER JOIN results ON Drivers.driverId = results.driverId"
+                + " INNER JOIN Races ON results.raceId = Races.raceId"
+                + " WHERE year = " + anno + " AND Drivers.driverId = " + pilotaId
+                + " GROUP BY surname,Drivers.driverId";
+        
+        int ris = 0;
+        ArrayList app = new ArrayList<>();
+        
+        try {
+            app = OperazioniDB.getResult(str);
+        } catch (SQLException ex) {
+            System.err.println("Errore: " + ex.getMessage());
+            System.exit(0);
+        }
+        
+        if(!app.isEmpty()) {
+            int punti = ((Double) ((ArrayList) app.get(0)).get(0)).intValue();
+            ris = punti;
         }
         return ris;
     }
@@ -129,7 +165,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * crea la classifica piloti in una data gara
      *
      * @param anno:Integer che identifica la classifica dell'anno
-     * @param nome:String  il nome del circuito
+     * @param nome:String il nome del circuito
      * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i piloti e
      * il loro punteggio
      * ************************************************************************************
@@ -214,7 +250,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * **********************************************************************************
      * restituisce i piloti di un dato costruttore
      *
-     * @param anno:Integer            che identifica l'anno
+     * @param anno:Integer che identifica l'anno
      * @param costruttore:Constructor identifica il costruttore
      * @return ArrayList<Driver> dove sono inseriti i piloti del costruttore
      * ************************************************************************************
@@ -252,7 +288,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * restituisce il costruttore di un pilota in un dato anno
      *
      * @param pilota:Driver che identifica il pilota
-     * @param anno:int      l'anno a cui riferirsi
+     * @param anno:int l'anno a cui riferirsi
      * @return Constructor il costruttore del pilota
      * ***************************************************************************************
      * @throws può sollevare SQLException
@@ -498,7 +534,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * restituisce i punteggi di un pilota per una data stagione
      *
      * @param pilota:Driver che identifica il pilota
-     * @param anno:Integer  indica l'anno di riferimento
+     * @param anno:Integer indica l'anno di riferimento
      * @return HashMap<Race, Integer> dove sono inserite le corse e i relativi
      * punteggi
      * ***************************************************************************************
@@ -575,7 +611,6 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
         return ris;
     }
 
-
 //===========================POSSIBILI=METODI=PER=GESTIRE=GLI=UTENTI====================================
     /**
      * *****************************************************************************
@@ -608,8 +643,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
 		}
 		return ris;
 	}
-*/
-
+     */
 
     /**
      * *********************************************************************************
@@ -619,7 +653,8 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * @param cognome:String indica il cognome vero dell'utente
      * @param username:String indica il nome utente da registrare
      * @param password:String indica la password !!!!DA CRIPTARE!!!!
-     * @return boolean: vero o falso a seconda se ha effettuato i comandi con successo
+     * @return boolean: vero o falso a seconda se ha effettuato i comandi con
+     * successo
      * *********************************************************************************
      * @throws può sollevare SQLException
      *//*
@@ -655,7 +690,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
 	 * loro punteggio
 	 * ************************************************************************************
 	 * @throws può sollevare SQLException
-	 *//*
+     *//*
     @Override
     public HashMap<Constructor, Integer> classificaCostruttoriS(int anno) {
         HashMap<Driver, Integer> pil = classificaPilotiS(anno);
@@ -687,6 +722,6 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
 
 
    
-	 */
+     */
 
 }
