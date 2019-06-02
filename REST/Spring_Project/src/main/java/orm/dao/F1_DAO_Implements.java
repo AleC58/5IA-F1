@@ -61,7 +61,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * ***********************************************************************************
      * crea la classifica piloti per un determinato anno decrescente
      *
-     * @param anno:Integer che identifica la classifica dell'anno
+     * @param anno:Integer     che identifica la classifica dell'anno
      * @param pilotaId:Integer che identifica il pilota
      * @return int il punteggio del pilota
      * ************************************************************************************
@@ -165,7 +165,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * crea la classifica piloti in una data gara
      *
      * @param anno:Integer che identifica la classifica dell'anno
-     * @param nome:String il nome del circuito
+     * @param nome:String  il nome del circuito
      * @return ArrayList<Paio < Integer, Integer>> dove sono inseriti i piloti e
      * il loro punteggio
      * ************************************************************************************
@@ -251,10 +251,10 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * Funzione che restituisce le gare e i circuiti di un determinato anno
      *
      * @param anno: intero che indica l'anno
-     * @return ArrayList<Paio<Integer, Integer>> l'insieme delle corse e dei
+     * @return ArrayList<Paio < Integer, Integer>> l'insieme delle corse e dei
      * relativi circuiti
      * @throws può sollevare SQLException
-     * ************************************************************************************************
+     *             ************************************************************************************************
      */
     @Override
     public ArrayList<Paio<Integer, Integer>> gareAnno(int anno) {
@@ -280,7 +280,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * **********************************************************************************
      * restituisce i piloti di un dato costruttore
      *
-     * @param anno:Integer che identifica l'anno
+     * @param anno:Integer            che identifica l'anno
      * @param costruttore:Constructor identifica il costruttore
      * @return ArrayList<Driver> dove sono inseriti i piloti del costruttore
      * ************************************************************************************
@@ -288,7 +288,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      */
     @Override
     public ArrayList<Driver> pilotiCostruttore(Constructor costruttore, int anno) {
-        String str = "SELECT DISTINCT Drivers.driverId, surname"
+        String str = "SELECT DISTINCT Drivers.*"
                 + " FROM Constructors INNER JOIN results ON Constructors.constructorId = results.constructorId"
                 + " INNER JOIN Drivers ON results.driverId = Drivers.driverId"
                 + " INNER JOIN Races ON results.raceId = Races.raceId"
@@ -296,7 +296,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
                 + " AND year = " + anno;
 
         ArrayList<Driver> ris = new ArrayList<>();
-        ArrayList app = new ArrayList<>();
+        ArrayList<ArrayList> app = new ArrayList<>();
         try {
             app = OperazioniDB.getResult(str);
         } catch (SQLException ex) {
@@ -306,8 +306,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
 
         for (int i = 0; i < app.size(); i++) {
             Driver a = new Driver();
-            a.setDriverId((Integer) ((ArrayList) app.get(i)).get(0));
-            a.setForename((String) ((ArrayList) app.get(i)).get(1));
+            a.setByDB(app.get(i));
             ris.add(a);
         }
         return ris;
@@ -318,7 +317,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * restituisce il costruttore di un pilota in un dato anno
      *
      * @param pilota:Driver che identifica il pilota
-     * @param anno:int l'anno a cui riferirsi
+     * @param anno:int      l'anno a cui riferirsi
      * @return Constructor il costruttore del pilota
      * ***************************************************************************************
      * @throws può sollevare SQLException
@@ -564,7 +563,7 @@ public class F1_DAO_Implements implements F1_DAO_Interface {
      * restituisce i punteggi di un pilota per una data stagione
      *
      * @param pilota:Driver che identifica il pilota
-     * @param anno:Integer indica l'anno di riferimento
+     * @param anno:Integer  indica l'anno di riferimento
      * @return HashMap<Race, Integer> dove sono inserite le corse e i relativi
      * punteggi
      * ***************************************************************************************

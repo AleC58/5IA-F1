@@ -159,22 +159,25 @@ public class GetController {
      * 1, nome cognome pilota 2]
      */
     @RequestMapping("scuderie/{anno}")
-    public HashMap<String, Object>[] scuderie(@PathVariable int anno) {
+    public ArrayList<HashMap<String, Object>> scuderie(@PathVariable int anno) {
         ArrayList<Integer> ids = impl.indiciTabella("constructors");
-        HashMap<String, Object>[] m = new HashMap[21];
-        for (int i = 0; i < m.length; i++) {
+        ArrayList<HashMap<String, Object>> m = new ArrayList<>(ids.size());
+        for (int i = 0; i < ids.size(); i++) {
             Constructor c = impl.infoCostruttore(ids.get(i));
-            m[i] = new HashMap<>();
-            m[i].put("id", c.getConstructorId());
-            m[i].put("nome", c.getName());
             ArrayList<Driver> l = impl.pilotiCostruttore(c, anno);
-            m[i].put("campionativinti", granPremiVintiScuderia(l, anno));
             String[] piloti = new String[l.size()];
             for (int j = 0; j < piloti.length; j++) {
                 piloti[j] = l.get(j).getForename() + " " + l.get(j).getSurname();
             }
-            m[i].put("piloti", piloti);
-
+            if (piloti.length != 0) //Se la scuderia non ha piloti significa che non gareggia in quest'anno quindi non va messa nell'array
+            {
+                m.add(new HashMap<>());
+                HashMap t = m.get(m.size() - 1);
+                t.put("id", c.getConstructorId());
+                t.put("nome", c.getName());
+                t.put("campionativinti", granPremiVintiScuderia(l, anno));
+                t.put("piloti", piloti);
+            }
         }
         return m;
     }
