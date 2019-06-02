@@ -22,6 +22,8 @@ public interface F1_DAO_Interface {
         
         abstract ArrayList<Integer> pilotiAnno(int anno); //--> Restituisce id piloti in un anno
         
+        abstract ArrayList<Paio<Integer, Integer>> gareAnno(int anno); //--> Restituisce id gare in un anno
+        
         abstract ArrayList<Paio<Integer, Integer>> classificaCostruttoriS(int anno); //--> Classifica dei costruttori
                 
         abstract ArrayList<Paio<Integer, Integer>> risultatoGara(String nome, int anno); //--> Risultato di una certa gara     

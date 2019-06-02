@@ -26,6 +26,7 @@ public class Test {
 		Driver c = new Driver();
 		c.setDriverId(1);
 		
+                System.out.println(f1.gareAnno(2010));
 		
 		System.out.println(f1.costruttorePilota(c, 2019));
                 
