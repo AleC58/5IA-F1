@@ -233,15 +233,18 @@ public class GetController {
 
     @RequestMapping("classificagara")
     public HashMap[] classificaGara(@RequestParam int anno, @RequestParam String tracciato) {
-        HashMap<String, Object>[] m = new HashMap[10];
+        ArrayList<Paio<Integer, Integer>> cl = impl.risultatoGara(tracciato, anno);
+        HashMap<String, Object>[] m = new HashMap[cl.size()];
         for (int i = 0; i < m.length; i++) {
+            Driver d = impl.infoPilota(cl.get(i).first);
+            Constructor c = impl.costruttorePilota(d, anno);
             m[i] = new HashMap<>();
-            m[i].put("id", 10);
-            m[i].put("nome", "Andrea");
-            m[i].put("cognome", "Crocco");
-            m[i].put("scuderia", "Ferrari");
-            m[i].put("punteggio", "121");
-            m[i].put("nazionalita", "Romania");
+            m[i].put("id", d.getDriverId());
+            m[i].put("nome", d.getForename());
+            m[i].put("cognome", d.getSurname());
+            m[i].put("scuderia", c.getName());
+            m[i].put("punteggio", cl.get(i).second);
+            m[i].put("nazionalita", d.getNationality());
         }
         return m;
     }
