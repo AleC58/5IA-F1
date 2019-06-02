@@ -66,7 +66,7 @@ public class GetController {
             m.put("numerogare", gare.size());
             m.put("granpremivinti", garevinte);
         } else {
-            m.put("error", "Id inesistente (id test: 10 | Development purpose only)");
+            m.put("error", "Id inesistente");
         }
         return m;
     }
