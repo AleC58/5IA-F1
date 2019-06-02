@@ -101,6 +101,7 @@ public class GetController {
             arr[i].put("granpremivinti", garevinte);
             arr[i].put("numerogare", gare.size());
             arr[i].put("numeropodi", podi);
+            arr[i].put("numero", d.getNumber());
         }
         return arr;
     }
